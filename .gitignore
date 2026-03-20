@@ -1,0 +1,64 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+ 
+# ── Virtual Environments ──────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+ 
+# ── Environment & Secrets ─────────────────────────────────────────────────────
+.env
+*.env
+!.env.example
+ 
+# ── Database ──────────────────────────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+ 
+# ── Uploads (user files, not code) ───────────────────────────────────────────
+uploads/
+ 
+# ── ML Models (large binary files — store in DVC or S3 instead) ──────────────
+models/
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.pth
+ 
+# ── OCR Cache (EasyOCR downloads model weights here) ─────────────────────────
+.EasyOCR/
+ 
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/
+ 
+# ── pytest / coverage ─────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+ 
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.suo
+*.user
+ 
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+ 
+# ── Build / Dist ──────────────────────────────────────────────────────────────
+dist/
+build/
+*.egg-info/
