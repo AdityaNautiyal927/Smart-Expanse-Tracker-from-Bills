@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./expenses.db
+      - OCR_ENGINE=easyocr
+      - CATEGORIZATION_ENGINE=rule_based
+      - ENABLE_ASYNC_PROCESSING=false
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./uploads:/app/uploads
+      - ./models:/app/models
+      - ./expenses.db:/app/expenses.db
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # ─── Celery Worker (for async OCR processing) ─────────────────────────────
+  # celery_worker:
+  #   build: .
+  #   command: celery -A app.tasks.celery_app worker --loglevel=info -Q ocr,parse,categorize
+  #   environment:
+  #     - CELERY_BROKER_URL=redis://redis:6379/0
+  #     - CELERY_RESULT_BACKEND=redis://redis:6379/0
+  #     - ENABLE_ASYNC_PROCESSING=true
+  #   volumes:
+  #     - ./uploads:/app/uploads
+  #   depends_on:
+  #     - redis
+
+  # ─── Flower (Celery monitoring UI) ────────────────────────────────────────
+  # flower:
+  #   build: .
+  #   command: celery -A app.tasks.celery_app flower --port=5555
+  #   ports:
+  #     - "5555:5555"
+  #   depends_on:
+  #     - redis
+
+  # ─── PostgreSQL (production database) ─────────────────────────────────────
+  # postgres:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_USER: expense_user
+  #     POSTGRES_PASSWORD: expense_pass
+  #     POSTGRES_DB: expensedb
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+# volumes:
+#   postgres_data:
